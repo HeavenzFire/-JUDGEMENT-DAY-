@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnia IDE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Omnia IDE</h1>
+        </header>
+        <div class="main">
+            <div class="sidebar">
+                <div class="file-explorer">
+                    <h2>File Explorer</h2>
+                    <div id="file-tree"></div>
+                </div>
+                <div class="demos">
+                    <h2>Demos</h2>
+                    <button id="quantum-demo">Quantum Time Dilation Demo</button>
+                    <button id="adamic-pulse">Adamic Pulse</button>
+                    <button id="merkaba-viz">Merkaba Visualization</button>
+                    <button id="sacred-naming">Sacred Naming</button>
+                </div>
+            </div>
+            <div class="content">
+                <div class="terminal">
+                    <h2>Terminal</h2>
+                    <div id="terminal-output"></div>
+                    <input type="text" id="terminal-input" placeholder="Enter Python code...">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
