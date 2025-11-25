@@ -1,19 +1,18 @@
 {
-  "manifest_version": 3,
-  "name": "Sovereign Shield",
+  "manifest_version": 2,
+  "name": "Syntropic Shield",
   "version": "1.0",
-  "description": "Adversarial Interoperability Tool dedicated to countering algorithmic predation on human attention. In memory of [Daughter's Name].",
+  "description": "Syntropic Guardian Browser Shield - Dynamic Evolution, Protection, Healing, Children-First Protocols, Autonomy.",
   "permissions": [
     "activeTab",
     "storage",
     "webRequest",
-    "webRequestBlocking"
-  ],
-  "host_permissions": [
+    "webRequestBlocking",
     "<all_urls>"
   ],
   "background": {
-    "service_worker": "background.js"
+    "scripts": ["background.js"],
+    "persistent": true
   },
   "content_scripts": [
     {
@@ -21,7 +20,12 @@
       "js": ["content.js"]
     }
   ],
-  "action": {
-    "default_popup": "popup.html"
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/icons/shield.png"
+  },
+  "icons": {
+    "48": "assets/icons/shield.png",
+    "128": "assets/icons/shield.png"
   }
 }
