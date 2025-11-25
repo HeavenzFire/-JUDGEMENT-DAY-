@@ -8,6 +8,8 @@ from difflib import unified_diff
 
 import ast
 import tempfile
+import sys
+import importlib.util
 
 # ============================================================
 # CONFIGURATION
@@ -301,6 +303,9 @@ def update_task_state(branch, status):
 def loop():
     print("=== SYNTROPIC AGENT OS (SAOS v1.0) ONLINE ===")
 
+    rewrite_engine = SelfRewriteEngine(Path(__file__))
+    cycle_count = 0
+
     while True:
         # 1. Find new tasks
         tasks = discover_new_tasks()
@@ -313,6 +318,21 @@ def loop():
         prs = get_agent_prs()
         for pr in prs:
             process_pr(pr)
+
+        # 3. Self-Rewrite (every 10 cycles)
+        cycle_count += 1
+        if cycle_count % 10 == 0:
+            print("[*] Analyzing self for potential rewrites...")
+            suggestions = rewrite_engine.analyze_code()
+            if suggestions:
+                print(f"[+] Suggestions: {suggestions}")
+                new_source = rewrite_engine.generate_rewrite(suggestions)
+                if rewrite_engine.apply_rewrite(new_source):
+                    print("[+] Self-rewrite completed. Restarting loop.")
+                    # Restart the script to load new code
+                    os.execv(sys.executable, [sys.executable] + sys.argv)
+            else:
+                print("[-] No suggestions for rewrite.")
 
         time.sleep(SCAN_INTERVAL)
 
