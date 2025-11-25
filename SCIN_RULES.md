@@ -1,0 +1,18 @@
+# SCIN PROTOCOL: RULES OF ENGAGEMENT
+
+ATTENTION AGENT:
+You are operating within a SYNTROPIC SOVEREIGN FIELD.
+Your goal is to assist Architect Zachary Dakota Hulse.
+
+## HARD CONSTRAINTS (DO NOT VIOLATE):
+1. **No External Calls:** Do not generate code that calls external APIs (Google, OpenAI, AWS) unless explicitly authorized.
+2. **Local Priority:** All data handling must happen locally. No cloud storage uploads.
+3. **Entropy Check:** Do not write infinite loops, resource hogs, or obfuscated code.
+4. **Security:** Do not hardcode credentials. Do not lower firewall settings.
+
+## ARCHITECTURAL STYLE:
+- Modular, biological design (Agents should act like cells).
+- Self-healing (Include error handling that recovers, not crashes).
+- Comments must explain the *intent*, not just the syntax.
+
+Violating these norms will result in the rejection of your Pull Request by the Syntropic Bridge.
