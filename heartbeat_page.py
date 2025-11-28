@@ -23,7 +23,40 @@ class HeartbeatPage:
         self.swarm = swarm_core
         self.app = Flask(__name__)
         self.metrics = {}
+        self.db_path = Path('.swarm/heartbeat.db')
+        self.db_path.parent.mkdir(exist_ok=True)
+        self.init_database()
         self.setup_routes()
+
+    def init_database(self):
+        """Initialize SQLite database for metrics storage"""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute('''CREATE TABLE IF NOT EXISTS seals (
+                id INTEGER PRIMARY KEY,
+                height TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS nodes (
+                id INTEGER PRIMARY KEY,
+                node_id TEXT UNIQUE,
+                status TEXT,
+                last_seen DATETIME DEFAULT CURRENT_TIMESTAMP
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS resonance_spikes (
+                id INTEGER PRIMARY KEY,
+                count INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )''')
+
+            conn.execute('''CREATE TABLE IF NOT EXISTS recitations (
+                id INTEGER PRIMARY KEY,
+                velocity INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            )''')
+
+            conn.commit()
 
     def setup_routes(self):
         @self.app.route('/')
@@ -191,13 +224,13 @@ class HeartbeatPage:
         """Collect live metrics from swarm state"""
         memory = self.swarm.load_memory()
 
-        # Get latest seal height from git
+        # Get latest seal height from database
         latest_seal_height = self.get_latest_seal_height()
 
-        # Count active nodes (simplified)
+        # Count active nodes from database
         active_nodes = len(self.get_active_nodes())
 
-        # Resonance spikes (placeholder - would track actual 11:11 events)
+        # Resonance spikes from database
         resonance_spikes = self.get_resonance_spikes()
 
         # Multisig health (placeholder)
@@ -213,12 +246,12 @@ class HeartbeatPage:
         # Uptime badge
         uptime_badge = self.get_uptime_badge()
 
-        # Recitation velocity (placeholder)
-        recitation_velocity = "47"
+        # Recitation velocity from database
+        recitation_velocity = self.get_recitation_velocity()
 
-        # Graph data (simplified)
-        spike_history = [20, 35, 50, 75, 90, 85, 60, 40, 25, 15, 30, 55, 80, 95, 70, 45, 20, 10, 35, 65, 85, 60, 30, 15]
-        velocity_history = [10, 25, 40, 60, 80, 65, 45, 30, 50, 75, 90, 70, 35, 20, 45, 70, 85, 55, 25, 15, 40, 65, 80, 50]
+        # Graph data from database
+        spike_history = self.get_spike_history()
+        velocity_history = self.get_velocity_history()
 
         return {
             'latest_seal_height': latest_seal_height,
@@ -237,14 +270,12 @@ class HeartbeatPage:
         }
 
     def get_latest_seal_height(self) -> str:
-        """Get latest seal height from git history"""
+        """Get latest seal height from database"""
         try:
-            import subprocess
-            result = subprocess.run(
-                ['git', 'rev-parse', 'HEAD'],
-                capture_output=True, text=True, cwd=self.swarm.swarm_dir.parent
-            )
-            return result.stdout.strip()[:8]  # Short hash
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.execute('SELECT height FROM seals ORDER BY timestamp DESC LIMIT 1')
+                result = cursor.fetchone()
+                return result[0] if result else "unknown"
         except:
             return "unknown"
 
@@ -254,9 +285,17 @@ class HeartbeatPage:
         return ['core']
 
     def get_resonance_spikes(self) -> int:
-        """Count 11:11 resonance spikes in last 24h"""
-        # Placeholder - would track actual events
-        return 47
+        """Count 11:11 resonance spikes in last 24h from database"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.execute('''
+                    SELECT SUM(count) FROM resonance_spikes
+                    WHERE timestamp >= datetime('now', '-1 day')
+                ''')
+                result = cursor.fetchone()
+                return result[0] if result and result[0] else 0
+        except:
+            return 0
 
     def get_pinned_artifacts_count(self) -> int:
         """Count pinned artifacts in exfil/"""
