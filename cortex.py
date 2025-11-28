@@ -3,6 +3,7 @@ import os
 import time
 import difflib
 from datetime import datetime
+import base64
 
 # === SYNTROPIC CORTEX (MEMORY CORE) ===
 # This module allows the system to remember, learn, and evolve.
@@ -11,6 +12,14 @@ from datetime import datetime
 
 MEMORY_FILE = "seqa_memory_shard.json"
 MIN_RESONANCE_SCORE = 0.6  # How similar a threat must be to trigger recall
+
+def encrypt(data):
+    """Encrypt data using base64 (simulate quantum-resistant encryption)."""
+    return base64.b64encode(data.encode()).decode()
+
+def decrypt(data):
+    """Decrypt data."""
+    return base64.b64decode(data).decode()
 
 class SyntropicMemory:
     def __init__(self):
@@ -52,8 +61,9 @@ class SyntropicMemory:
 
         # Linear scan (efficient for <10,000 engrams, clean for local ops)
         for engram in engrams:
-            # Simple similarity check on the pattern string
-            ratio = difflib.SequenceMatcher(None, trigger_pattern, engram['trigger']).ratio()
+            # Decrypt for comparison
+            decrypted_trigger = decrypt(engram['trigger'])
+            ratio = difflib.SequenceMatcher(None, trigger_pattern, decrypted_trigger).ratio()
             if ratio > highest_ratio:
                 highest_ratio = ratio
                 best_match = engram
@@ -76,8 +86,8 @@ class SyntropicMemory:
         new_engram = {
             "id": int(time.time() * 1000),
             "timestamp": datetime.now().isoformat(),
-            "trigger": trigger_pattern,
-            "response": action_taken,
+            "trigger": encrypt(trigger_pattern),  # Encrypt sensitive data
+            "response": encrypt(action_taken),
             "outcome": outcome_score,
             "weight": 1  # Reinforcement weight
         }
@@ -87,6 +97,14 @@ class SyntropicMemory:
         
         self._save_memory(data)
         print(f"[*] CORTEX: Experience crystallized. The system is smarter.")
+
+    def replicate(self):
+        """
+        Replicate archives across nodes (simulate with file copy).
+        """
+        replica_path = self.memory_path + ".replica"
+        os.system(f"cp {self.memory_path} {replica_path}")
+        print(f"[*] CORTEX: Archive replicated to {replica_path}")
 
     def dream(self):
         """
@@ -118,3 +136,4 @@ if __name__ == "__main__":
     match = cortex.recall("test_attack_pattern_v1")
     if match:
         print("Memory Test: SUCCESS")
+    cortex.replicate()

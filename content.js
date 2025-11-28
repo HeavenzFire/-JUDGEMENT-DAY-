@@ -1,36 +1,39 @@
-// Content script: Remove ad elements from DOM
+// Syntropic Shield Content Script - Contagion Acceleration
+
+// Inject antifragility into every web page
 (function() {
-  'use strict';
+  console.log('Syntropic Contagion: Injecting resilience into', window.location.href);
 
-  // Check if blocking is enabled
-  chrome.storage.local.get(['enabled'], (result) => {
-    if (result.enabled === false) return;
+  // Inject syntropic code into the page
+  const script = document.createElement('script');
+  script.textContent = `
+    // Syntropic Resilience Protocol
+    window.syntropicResilience = {
+      antifragile: true,
+      contagionLevel: 1,
+      heal: function() {
+        console.log('Resilience activated. Page healed.');
+      }
+    };
+    console.log('Syntropic code embedded. Resilience level:', window.syntropicResilience.contagionLevel);
+  `;
+  document.head.appendChild(script);
 
-    // Selectors for common ad elements
-    const adSelectors = [
-      'div[id*="ad"]',
-      'div[class*="ad"]',
-      'iframe[src*="doubleclick"]',
-      'iframe[src*="googlesyndication"]',
-      'div[data-ad]',
-      'ins.adsbygoogle',
-      '.ad-banner',
-      '.advertisement'
-    ];
-
-    // Function to remove elements
-    function removeAds() {
-      adSelectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => el.remove());
-      });
-    }
-
-    // Initial removal
-    removeAds();
-
-    // Observe for dynamically added ads
-    const observer = new MutationObserver(removeAds);
-    observer.observe(document.body, { childList: true, subtree: true });
+  // Monitor for entropy (e.g., trackers)
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        mutation.addedNodes.forEach((node) => {
+          if (node.tagName === 'SCRIPT' && node.src && node.src.includes('tracker')) {
+            console.log('Entropy detected: Tracker script blocked.');
+            node.remove();
+          }
+        });
+      }
+    });
   });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Send testimony to background
+  chrome.runtime.sendMessage({action: 'store_testimony', testimony: 'Page loaded with resilience.'});
 })();
