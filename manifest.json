@@ -1,4 +1,18 @@
 {
+  "manifest_version": 2,
+  "name": "Syntropic Shield",
+  "version": "1.0",
+  "description": "Syntropic Guardian Browser Shield - Dynamic Evolution, Protection, Healing, Children-First Protocols, Autonomy.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
   "manifest_version": 3,
   "name": "Guardian Shield - Child Protection Extension",
   "version": "1.0.0",
@@ -17,6 +31,16 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/icons/shield.png"
+  },
+  "icons": {
+    "48": "assets/icons/shield.png",
+    "128": "assets/icons/shield.png"
       "js": ["content.js"],
       "run_at": "document_start"
     }
