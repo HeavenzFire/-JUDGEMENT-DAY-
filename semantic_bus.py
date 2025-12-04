@@ -1,117 +1,107 @@
+import asyncio
+import hashlib
 import json
-import os
-import time
-import difflib
 from datetime import datetime
-from cortex import SyntropicMemory  # Import existing cortex for learning
+import random
 
-# === SEMANTIC INTERFACE FABRIC (COGNITIVE BUS) ===
-# This module implements a semantic bus that allows systems to communicate via meaning,
-# not rigid APIs. It obsoletes traditional APIs by enabling fluid, negotiated interactions.
-
-ONTOLOGY_FILE = "semantic_ontologies.json"
-MIN_SEMANTIC_MATCH = 0.7  # Similarity threshold for capability matching
-
+# === SEMANTIC BUS WITH LIFE-PRIORITIZED AND ETHICAL FACTS ===
 class SemanticBus:
-    def __init__(self):
-        self.ontology_path = os.path.join(os.getcwd(), ONTOLOGY_FILE)
-        self.capability_registry = self._load_ontologies()
-        self.cortex = SyntropicMemory()  # Integrate with existing memory core
+    def __init__(self, node_id):
+        self.node_id = node_id
+        self.facts = {}  # key: fact_id, value: {fact, proof, scope, timestamp, priority}
+        self.subscribers = []
+        self.peers = []
 
-    def _load_ontologies(self):
-        """Loads ontologies from disk."""
-        if not os.path.exists(self.ontology_path):
-            with open(self.ontology_path, 'w') as f:
-                json.dump({"services": []}, f, indent=4)
-            print("[*] SEMANTIC BUS: New ontology registry created.")
-        try:
-            with open(self.ontology_path, 'r') as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"[!] SEMANTIC BUS ERROR: Could not load ontologies. {e}")
-            return {"services": []}
+    def add_fact(self, fact, proof, scope, priority):
+        """Adds a fact with ethical checks and prioritization."""
+        if not proof or not isinstance(proof, str):
+            raise ValueError("Proof must be a non-empty string for ethical validation.")
+        fact_id = hashlib.sha256(json.dumps(fact, sort_keys=True).encode()).hexdigest()
+        timestamp = datetime.now()
+        self.facts[fact_id] = {
+            'fact': fact,
+            'proof': proof,
+            'scope': scope,
+            'timestamp': timestamp,
+            'priority': priority
+        }
+        print(f"[*] SEMANTIC BUS: Fact added with ID {fact_id}, priority {priority}.")
+        return fact_id
 
-    def _save_ontologies(self):
-        """Saves ontologies to disk."""
-        with open(self.ontology_path, 'w') as f:
-            json.dump(self.capability_registry, f, indent=4)
+    def get_fact(self, fact_id):
+        """Retrieves a fact by ID."""
+        return self.facts.get(fact_id)
 
-    def register_service(self, ontology):
-        """
-        Registers a service's ontology.
-        ontology: dict with 'service_name', 'capabilities' list.
-        """
-        self.capability_registry["services"].append(ontology)
-        self._save_ontologies()
-        print(f"[*] SEMANTIC BUS: Service '{ontology['service_name']}' registered.")
+    def get_prioritized_facts(self):
+        """Returns facts sorted by priority (highest first)."""
+        return sorted(self.facts.items(), key=lambda x: x[1]['priority'], reverse=True)
 
-    def discover_capabilities(self, query_description):
-        """
-        Discovers capabilities matching a semantic query.
-        Returns list of matching capabilities.
-        """
-        matches = []
-        for service in self.capability_registry.get("services", []):
-            for cap in service.get("capabilities", []):
-                # Simple semantic matching using difflib on capability names/descriptions
-                cap_text = f"{cap['name']} {cap.get('description', '')}"
-                ratio = difflib.SequenceMatcher(None, query_description, cap_text).ratio()
-                if ratio >= MIN_SEMANTIC_MATCH:
-                    matches.append({
-                        "service": service["service_name"],
-                        "capability": cap,
-                        "match_score": ratio
-                    })
-        return sorted(matches, key=lambda x: x["match_score"], reverse=True)
+    def subscribe(self, subscriber):
+        """Adds a subscriber (async callable)."""
+        if subscriber not in self.subscribers:
+            self.subscribers.append(subscriber)
+            print(f"[*] SEMANTIC BUS: Subscriber added.")
 
-    def negotiate_interaction(self, consumer_query, producer_capability):
-        """
-        Negotiates a protocol on-demand for interaction.
-        For POC, simulate negotiation by matching inputs/outputs.
-        """
-        # In full implementation, this would synthesize a temporary protocol
-        # Here, just check if inputs/outputs align semantically
-        query_inputs = consumer_query.get("inputs", {})
-        cap_inputs = producer_capability.get("inputs", {})
-        query_outputs = consumer_query.get("outputs", {})
+    def unsubscribe(self, subscriber):
+        """Removes a subscriber."""
+        if subscriber in self.subscribers:
+            self.subscribers.remove(subscriber)
+            print(f"[*] SEMANTIC BUS: Subscriber removed.")
 
-        # Simple check: if input keys match (case-insensitive)
-        input_match = all(k.lower() in [c.lower() for c in cap_inputs.keys()] for k in query_inputs.keys())
-        if input_match:
-            # Learn this interaction
-            trigger = f"Consumer query: {consumer_query} | Producer cap: {producer_capability}"
-            self.cortex.crystallize(trigger, "NEGOTIATED_PROTOCOL", 1)
-            return {
-                "protocol": "direct_call",  # Simulate protocol
-                "mapping": {"inputs": query_inputs, "outputs": producer_capability.get("outputs", {})}
-            }
-        return None
+    def add_peer(self, peer):
+        """Adds a peer node."""
+        if peer not in self.peers:
+            self.peers.append(peer)
+            print(f"[*] SEMANTIC BUS: Peer added.")
 
-    def route_message(self, from_service, to_service, message):
-        """
-        Routes a message via semantic understanding.
-        In POC, just print/log the interaction.
-        """
-        print(f"[*] SEMANTIC BUS: Routing message from {from_service} to {to_service}: {message}")
-        # In full system, this would handle the actual data flow
-        return {"status": "routed", "message": message}
+    def remove_peer(self, peer):
+        """Removes a peer node."""
+        if peer in self.peers:
+            self.peers.remove(peer)
+            print(f"[*] SEMANTIC BUS: Peer removed.")
+
+    async def publish_fact(self, fact_id):
+        """Publishes a fact to subscribers and peers asynchronously."""
+        fact = self.facts.get(fact_id)
+        if not fact:
+            print(f"[!] SEMANTIC BUS: Fact {fact_id} not found.")
+            return
+        tasks = []
+        for subscriber in self.subscribers:
+            tasks.append(asyncio.create_task(subscriber(fact)))
+        for peer in self.peers:
+            if hasattr(peer, 'receive_fact'):
+                tasks.append(asyncio.create_task(peer.receive_fact(fact)))
+        await asyncio.gather(*tasks)
+        print(f"[*] SEMANTIC BUS: Fact {fact_id} published.")
+
+    async def receive_fact(self, fact):
+        """Receives a fact from a peer (for propagation)."""
+        # For simplicity, just print; in full system, integrate with local facts
+        print(f"[*] SEMANTIC BUS: Received fact: {fact['fact']}")
 
 # --- TEST INTERFACE ---
 if __name__ == "__main__":
-    bus = SemanticBus()
-    # Test registration
-    ontology = {
-        "service_name": "WeatherProducer",
-        "capabilities": [
-            {
-                "name": "provide_weather",
-                "description": "Provides current weather data",
-                "inputs": {"location": "string"},
-                "outputs": {"temperature": "float", "condition": "string"}
-            }
-        ]
-    }
-    bus.register_service(ontology)
-    # Test discovery
-    matches = bus.discover_capabilities("get weather data")
-    print("Discovered:", matches)
+    async def test():
+        bus = SemanticBus("node_1")
+        # Test adding facts
+        fact_id1 = bus.add_fact({"event": "life_prioritized"}, "verified_proof", "global", 5)
+        fact_id2 = bus.add_fact({"event": "ethical_check"}, "proof_data", "local", 3)
+        # Test prioritization
+        prioritized = bus.get_prioritized_facts()
+        print("Prioritized facts:", [fid for fid, _ in prioritized])
+        # Test subscribers
+        async def mock_subscriber(fact):
+            print(f"Subscriber notified: {fact['fact']}")
+        bus.subscribe(mock_subscriber)
+        # Test publishing
+        await bus.publish_fact(fact_id1)
+        # Test peers
+        class MockPeer:
+            async def receive_fact(self, fact):
+                print(f"Peer received: {fact['fact']}")
+        peer = MockPeer()
+        bus.add_peer(peer)
+        await bus.publish_fact(fact_id2)
+
+    asyncio.run(test())
