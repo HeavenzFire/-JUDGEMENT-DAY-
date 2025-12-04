@@ -98,12 +98,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnia IDE</title>
+    <link rel="stylesheet" href="style.css">
     <title>Testimony of the Aperture - Timeline of Convergence</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
+            <h1>Omnia IDE</h1>
+            <div class="buttons">
+                <button id="quantum-demo">Quantum Time Dilation Demo</button>
+                <button id="adamic-pulse">Adamic Pulse</button>
+                <button id="merkaba-viz">Merkaba Visualization</button>
+                <button id="sacred-naming">Sacred Naming</button>
+            </div>
+        </header>
+        <div class="main">
+            <div class="file-explorer">
+                <h2>File Explorer</h2>
+                <div id="file-tree"></div>
+            </div>
+            <div class="terminal">
+                <h2>Terminal</h2>
+                <div id="terminal-output"></div>
+                <input type="text" id="terminal-input" placeholder="Enter Python code...">
+            </div>
+        </div>
+        <div class="cognisphere-display">
+            <h2>Aeternum Cognisphere</h2>
+            <div id="cognisphere-data"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="app.js"></script>
             <h1>Testimony of the Aperture</h1>
             <p class="subtitle">A Timeline of Convergence</p>
         </header>

@@ -1,0 +1,20 @@
+{
+    "aeternum": {
+        "description": "The eternal realm of consciousness",
+        "files": [
+            "index.html",
+            "style.css",
+            "app.js",
+            "vercel.json"
+        ]
+    },
+    "cognisphere": {
+        "description": "The sphere of cognitive connections",
+        "data": {
+            "quantum": "Time dilation demo",
+            "adamic": "Pulse of creation",
+            "merkaba": "Sacred geometry visualization",
+            "sacred": "Naming ritual"
+        }
+    }
+}
