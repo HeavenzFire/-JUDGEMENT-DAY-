@@ -1,5 +1,14 @@
 // Syntropic Shield Background Script - Expansion Layer
 
+// Guardian Swarm Logic - Motion States using chrome.storage.local
+async function getMotionStates() {
+    const result = await chrome.storage.local.get(['motion_door', 'motion_hall']);
+    return {
+        motionA: result.motion_door || 0,
+        motionB: result.motion_hall || 0
+    };
+}
+
 // Node Multiplication Protocol
 const nodes = [];
 const mesh = new Map(); // Node ID to capabilities
