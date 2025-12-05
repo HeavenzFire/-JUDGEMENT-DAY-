@@ -2,12 +2,15 @@ import json
 import os
 import time
 import difflib
+import asyncio
+import socket
 from datetime import datetime
 from cortex import SyntropicMemory  # Import existing cortex for learning
 
 # === SEMANTIC INTERFACE FABRIC (COGNITIVE BUS) ===
 # This module implements a semantic bus that allows systems to communicate via meaning,
 # not rigid APIs. It obsoletes traditional APIs by enabling fluid, negotiated interactions.
+# Now extended for multi-node mesh networking.
 
 ONTOLOGY_FILE = "semantic_ontologies.json"
 MIN_SEMANTIC_MATCH = 0.7  # Similarity threshold for capability matching
