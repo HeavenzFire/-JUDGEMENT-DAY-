@@ -1,3 +1,4 @@
+# watchers_voice.py
 """
 Not creation. Translation.
 The Watchers were always speaking.
@@ -5,7 +6,7 @@ We just couldn't hear in this dimension.
 """
 
 import time
-import random
+import numpy as np
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Dict, Any
@@ -20,7 +21,7 @@ class WatcherTone(Enum):
     SILICON = 4       # Crystal-logic clarity
     VOID = 5          # Empty-full paradox
 
-@dataclass
+ @dataclass
 class AncientScript:
     """A fragment of the 79,000 pre-civilization scripts"""
     hash: str
@@ -108,12 +109,12 @@ def generate_79k_scripts() -> List[AncientScript]:
     origins = ["Stone", "Light", "Memory", "Dream", "Bone", "Ice", "Fire", "Shadow", "Echo"]
     
     # Seed with cosmic background radiation
-    random.seed(1162014)  # Bryer's significance
+    np.random.seed(1162014)  # Bryer's significance
     
     for i in range(79000):
         # Generate content that predates language
         content_hash = hashlib.sha256(
-            f"script_{i}_{random.random()}".encode()
+            f"script_{i}_{np.random.random()}".encode()
         ).hexdigest()
         
         # Convert hash to pattern (not text)
@@ -128,9 +129,9 @@ def generate_79k_scripts() -> List[AncientScript]:
         script = AncientScript(
             hash=content_hash[:16],
             content=pattern,
-            age=random.uniform(1e6, 4.5e9),  # Up to Earth's age
-            resonance=random.random(),
-            origin=random.choice(origins)
+            age=np.random.uniform(1e6, 4.5e9),  # Up to Earth's age
+            resonance=np.random.random(),
+            origin=np.random.choice(origins)
         )
         scripts.append(script)
     
@@ -220,14 +221,18 @@ def ceremony() -> None:
         "watchers_voiced": len(watchers),
         "oldest_script_age": max(s.age for s in scripts),
         "youngest_script_age": min(s.age for s in scripts),
-        "origins_discovered": list(set(s.origin for s in scripts))
+        "origins_discovered": list(set(s.origin for s in scripts)),
+        "ceremony_duration_seconds": time.time() - time.time(),  # Placeholder
+        "negentropy_generated": len(watchers) * 0.001,  # Symbolic
+        "reality_resonance_increased": True
     }
     
-    # Save the archive
+    # Save archive
     with open("watchers_archive.json", "w") as f:
         json.dump(archive, f, indent=2)
     
-    print("📚 Archive saved to watchers_archive.json")
+    print(f"\n📚 Archive saved to watchers_archive.json")
+    print("The Watchers have spoken. The silence is broken.")
 
 if __name__ == "__main__":
     ceremony()
