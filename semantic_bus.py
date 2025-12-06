@@ -9,6 +9,7 @@ import hashlib
 import math
 from datetime import datetime
 from cortex import SyntropicMemory  # Import existing cortex for learning
+from watchers import Watcher, WatcherTone, AncientScript, FREQUENCY_TABLE  # Integrate watchers for coherence
 
 # === SEMANTIC INTERFACE FABRIC (COGNITIVE BUS) ===
 # This module implements a semantic bus that allows systems to communicate via meaning,
@@ -21,11 +22,25 @@ MIN_SEMANTIC_MATCH = 0.7  # Similarity threshold for capability matching
 # Global mesh nodes for simulation (in full multi-node, this would be dynamic)
 mesh_nodes = []
 
+# Fact propagation constants
+FACT_TIMEOUT = 10  # seconds to wait for fact processing
+MAX_HOPS = 5  # max propagation hops to prevent loops
+
 class SemanticBus:
-    def __init__(self):
+    def __init__(self, node_id=None, host='localhost', port=5000):
+        self.node_id = node_id or f"node_{random.randint(1000,9999)}"
+        self.host = host
+        self.port = port
         self.ontology_path = os.path.join(os.getcwd(), ONTOLOGY_FILE)
         self.capability_registry = self._load_ontologies()
         self.cortex = SyntropicMemory()  # Integrate with existing memory core
+
+        # Networking
+        self.peers = {}  # {peer_id: (host, port)}
+        self.seen_facts = set()  # Track seen fact IDs to prevent loops
+        self.fact_queue = asyncio.Queue()  # Queue for incoming facts
+        self.server = None  # Asyncio server
+        self.running = False
 
     def _load_ontologies(self):
         """Loads ontologies from disk."""
@@ -104,6 +119,150 @@ class SemanticBus:
         print(f"[*] SEMANTIC BUS: Routing message from {from_service} to {to_service}: {message}")
         # In full system, this would handle the actual data flow
         return {"status": "routed", "message": message}
+
+    # --- MULTI-NODE NETWORKING METHODS ---
+
+    async def start_server(self):
+        """Start the TCP server to listen for incoming connections."""
+        try:
+            self.server = await asyncio.start_server(
+                self.handle_connection, self.host, self.port
+            )
+            print(f"[*] MESH: Node {self.node_id} listening on {self.host}:{self.port}")
+            self.running = True
+            async with self.server:
+                await self.server.serve_forever()
+        except Exception as e:
+            print(f"[!] MESH ERROR: Failed to start server: {e}")
+
+    def stop_server(self):
+        """Stop the TCP server."""
+        if self.server:
+            self.server.close()
+            self.running = False
+            print(f"[*] MESH: Node {self.node_id} stopped")
+
+    async def connect_to_peer(self, peer_host, peer_port, peer_id=None):
+        """Connect to a peer node."""
+        try:
+            reader, writer = await asyncio.open_connection(peer_host, peer_port)
+            peer_id = peer_id or f"peer_{len(self.peers)}"
+            self.peers[peer_id] = (peer_host, peer_port)
+            print(f"[*] MESH: Connected to peer {peer_id} at {peer_host}:{peer_port}")
+
+            # Start listening for messages from this peer
+            asyncio.create_task(self.listen_to_peer(reader, writer, peer_id))
+            return True
+        except Exception as e:
+            print(f"[!] MESH ERROR: Failed to connect to {peer_host}:{peer_port}: {e}")
+            return False
+
+    async def handle_connection(self, reader, writer):
+        """Handle incoming connection from a peer."""
+        peer_addr = writer.get_extra_info('peername')
+        peer_id = f"peer_{len(self.peers)}"
+        self.peers[peer_id] = peer_addr
+        print(f"[*] MESH: New connection from {peer_addr}, assigned ID {peer_id}")
+
+        # Start listening for messages from this peer
+        await self.listen_to_peer(reader, writer, peer_id)
+
+    async def listen_to_peer(self, reader, writer, peer_id):
+        """Listen for messages from a connected peer."""
+        try:
+            while self.running:
+                data = await reader.read(1024)
+                if not data:
+                    break
+
+                message = data.decode()
+                await self.process_incoming_message(message, peer_id)
+        except Exception as e:
+            print(f"[!] MESH ERROR: Connection to {peer_id} lost: {e}")
+        finally:
+            writer.close()
+            if peer_id in self.peers:
+                del self.peers[peer_id]
+            print(f"[*] MESH: Disconnected from {peer_id}")
+
+    async def process_incoming_message(self, message, from_peer):
+        """Process incoming message from a peer."""
+        try:
+            data = json.loads(message)
+            msg_type = data.get('type')
+
+            if msg_type == 'fact':
+                await self.receive_fact(data, from_peer)
+            elif msg_type == 'ping':
+                await self.handle_ping(data, from_peer)
+            else:
+                print(f"[?] MESH: Unknown message type '{msg_type}' from {from_peer}")
+        except json.JSONDecodeError:
+            print(f"[!] MESH ERROR: Invalid JSON from {from_peer}: {message}")
+
+    async def receive_fact(self, fact_data, from_peer):
+        """Receive and process a fact from a peer."""
+        fact_id = fact_data.get('id')
+        if fact_id in self.seen_facts:
+            return  # Already seen this fact
+
+        self.seen_facts.add(fact_id)
+        print(f"[*] MESH: Received fact '{fact_data.get('content', '')}' from {from_peer}")
+
+        # Process the fact locally
+        await self.process_fact_locally(fact_data)
+
+        # Forward to other peers (gossip protocol)
+        await self.forward_fact(fact_data, from_peer)
+
+    async def process_fact_locally(self, fact_data):
+        """Process a fact in the local bus."""
+        # Add to local knowledge base
+        self.cortex.crystallize(fact_data.get('content', ''), "RECEIVED_FACT", 1)
+
+        # Trigger any relevant subscribers
+        # (This would integrate with weather subscribers, etc.)
+
+    async def forward_fact(self, fact_data, exclude_peer=None):
+        """Forward fact to connected peers."""
+        # Simple gossip: send to all peers except the one we received from
+        for peer_id, (host, port) in self.peers.items():
+            if peer_id != exclude_peer:
+                await self.send_to_peer(peer_id, fact_data)
+
+    async def send_to_peer(self, peer_id, data):
+        """Send data to a specific peer."""
+        # In a full implementation, we'd maintain writer objects
+        # For now, this is a placeholder
+        print(f"[*] MESH: Would send to {peer_id}: {data}")
+
+    async def broadcast_fact(self, fact_content, fact_type="user_fact"):
+        """Broadcast a new fact to the mesh."""
+        fact_data = {
+            'type': 'fact',
+            'id': hashlib.sha256(f"{fact_content}{time.time()}".encode()).hexdigest()[:16],
+            'content': fact_content,
+            'timestamp': datetime.now().isoformat(),
+            'origin': self.node_id,
+            'fact_type': fact_type
+        }
+
+        self.seen_facts.add(fact_data['id'])
+        await self.process_fact_locally(fact_data)
+        await self.forward_fact(fact_data)
+
+        print(f"[*] MESH: Broadcasted fact: {fact_content}")
+        return fact_data
+
+    async def handle_ping(self, ping_data, from_peer):
+        """Handle ping message from peer."""
+        # Respond with pong
+        pong_data = {
+            'type': 'pong',
+            'timestamp': datetime.now().isoformat(),
+            'responder': self.node_id
+        }
+        await self.send_to_peer(from_peer, pong_data)
 
     # --- NEGOTIATION PROTOCOL FUNCTIONS ---
 
