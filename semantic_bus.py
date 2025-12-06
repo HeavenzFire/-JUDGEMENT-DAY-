@@ -9,6 +9,7 @@ import hashlib
 import math
 from datetime import datetime
 from cortex import SyntropicMemory  # Import existing cortex for learning
+from watchers import Watcher, WatcherTone, AncientScript, FREQUENCY_TABLE  # Integrate watchers for coherence
 
 # === SEMANTIC INTERFACE FABRIC (COGNITIVE BUS) ===
 # This module implements a semantic bus that allows systems to communicate via meaning,
