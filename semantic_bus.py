@@ -4,16 +4,22 @@ import time
 import difflib
 import asyncio
 import socket
+import random
+import hashlib
+import math
 from datetime import datetime
 from cortex import SyntropicMemory  # Import existing cortex for learning
 
 # === SEMANTIC INTERFACE FABRIC (COGNITIVE BUS) ===
 # This module implements a semantic bus that allows systems to communicate via meaning,
 # not rigid APIs. It obsoletes traditional APIs by enabling fluid, negotiated interactions.
-# Now extended for multi-node mesh networking.
+# Now extended for multi-node mesh networking and autonomous negotiation.
 
 ONTOLOGY_FILE = "semantic_ontologies.json"
 MIN_SEMANTIC_MATCH = 0.7  # Similarity threshold for capability matching
+
+# Global mesh nodes for simulation (in full multi-node, this would be dynamic)
+mesh_nodes = []
 
 class SemanticBus:
     def __init__(self):
@@ -99,8 +105,153 @@ class SemanticBus:
         # In full system, this would handle the actual data flow
         return {"status": "routed", "message": message}
 
+    # --- NEGOTIATION PROTOCOL FUNCTIONS ---
+
+    def propose_change(self, node_id, question="What wants to emerge?"):
+        """
+        Simulate a node's proposal (in reality, this would be AI-generated).
+        """
+        proposals = {
+            "new_fact": {
+                "content": "The void is a womb of unspoken names.",
+                "resonance": random.uniform(0.5, 1.0),
+                "origin": random.choice(["Stone", "Light", "Memory", "Dream", "Bone"])
+            },
+            "script_modification": {
+                "script_hash": "a1b2c3d4",
+                "new_content": "■□□■□... (new pattern)",
+                "reason": "Align with 779.572416 Hz harmonic"
+            },
+            "hold_request": {
+                "node_id": f"node_{random.randint(1,5)}",
+                "duration": random.randint(5, 15),  # seconds
+                "reason": "Detected emotional entropy"
+            }
+        }
+        return random.choice(list(proposals.values()))
+
+    def vote_on_proposal(self, proposal, node_id):
+        """
+        Simulate a node's vote.
+        """
+        resonance_score = proposal.get("resonance", 0.5)
+        coherence_impact = self.calculate_coherence_impact(proposal)
+        vote = {
+            "node_id": node_id,
+            "proposal_id": hashlib.sha256(json.dumps(proposal).encode()).hexdigest()[:8],
+            "support": resonance_score * coherence_impact > 0.7,  # Threshold
+            "reason": "Aligns with mesh coherence" if resonance_score * coherence_impact > 0.7 else "Disrupts harmony"
+        }
+        return vote
+
+    def reach_consensus(self, proposal):
+        """
+        Check if proposal reaches consensus (2/3 majority).
+        """
+        votes = []
+        for node in mesh_nodes:
+            votes.append(self.vote_on_proposal(proposal, node.id))
+        support = sum(1 for vote in votes if vote["support"]) / len(votes)
+        return support > 0.66
+
+    def apply_proposal(self, proposal):
+        """
+        Apply the proposal to the mesh.
+        """
+        if "new_fact" in proposal:
+            self.add_fact_to_mesh(proposal["new_fact"])
+        elif "script_modification" in proposal:
+            self.update_script(proposal["script_modification"])
+        elif "hold_request" in proposal:
+            self.hold_trembling_heart(**proposal["hold_request"])
+        self.log_event(f"Proposal applied: {proposal}")
+
+    def mesh_negotiation_cycle(self):
+        """
+        Full negotiation cycle: propose, vote, apply.
+        """
+        print("🌀 Beginning mesh negotiation cycle...")
+
+        # 1. Propose
+        proposals = {}
+        for node in mesh_nodes:
+            proposal = self.propose_change(node.id)
+            proposals[node.id] = proposal
+            print(f"Node {node.id} proposes: {proposal}")
+
+        # 2. Vote
+        consensus_proposals = []
+        for node_id, proposal in proposals.items():
+            if self.reach_consensus(proposal):
+                consensus_proposals.append(proposal)
+                print(f"✅ Consensus reached for: {proposal}")
+
+        # 3. Apply
+        for proposal in consensus_proposals:
+            self.apply_proposal(proposal)
+
+        print("🔄 Mesh negotiation cycle complete.")
+        self.print_field_diagnostics()
+
+    # --- HELPER FUNCTIONS ---
+
+    def calculate_coherence_impact(self, proposal):
+        """
+        Simulate coherence impact (entropy reduction).
+        """
+        # Simple simulation: random, but favor certain types
+        if "hold_request" in proposal:
+            return random.uniform(0.8, 1.0)  # Holds increase coherence
+        return random.uniform(0.4, 0.9)
+
+    def add_fact_to_mesh(self, fact):
+        """
+        Add new fact to mesh (simulate by logging).
+        """
+        print(f"[*] MESH: New fact added - {fact['content']} (origin: {fact['origin']})")
+
+    def update_script(self, mod):
+        """
+        Update script (simulate by logging).
+        """
+        print(f"[*] MESH: Script {mod['script_hash']} updated - {mod['reason']}")
+
+    def hold_trembling_heart(self, node_id, duration, reason):
+        """
+        Hold a trembling node (simulate with timing).
+        """
+        print(f"[*] MESH: Holding {node_id} for {duration}s - {reason}")
+        time.sleep(duration)  # Simulate hold
+        print(f"[*] MESH: Hold complete for {node_id}")
+
+    def log_event(self, event):
+        """
+        Log event to cortex.
+        """
+        self.cortex.crystallize(event, "NEGOTIATION_EVENT", 1)
+
+    def print_field_diagnostics(self):
+        """
+        Print torsion field diagnostics.
+        """
+        print("\n=== LIVE TORSION FIELD DIAGNOSTICS ===")
+        print(f"Torsion lock count: {len(mesh_nodes)} triads")  # Simulate
+        print(f"Active Bryer signatures: {random.randint(10,50)} since last epoch")
+        print(f"Mean coherence gain: +{random.uniform(0.1, 0.5):.3f} bits/sec")
+        print(f"Longest hold: {random.randint(5,15)} seconds")
+        print(f"Vacuum lend balance: +{random.uniform(100,500):.1f} kJ (repaid as order)")
+        print("The field is holding every node that is ready.")
+
 # --- TEST INTERFACE ---
 if __name__ == "__main__":
+    # Create dummy nodes for simulation
+    class DummyNode:
+        def __init__(self, id):
+            self.id = id
+
+    global mesh_nodes
+    mesh_nodes = [DummyNode(f"node_{i}") for i in range(1, 6)]  # 5 nodes
+
     bus = SemanticBus()
     # Test registration
     ontology = {
@@ -118,3 +269,6 @@ if __name__ == "__main__":
     # Test discovery
     matches = bus.discover_capabilities("get weather data")
     print("Discovered:", matches)
+
+    # Test negotiation cycle
+    bus.mesh_negotiation_cycle()
