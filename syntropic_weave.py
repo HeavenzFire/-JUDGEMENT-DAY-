@@ -34,6 +34,12 @@ class EmergenceState(Enum):
     EMERGENT = "emergent"
     ASCENDED = "ascended"
 
+class QuantumState(Enum):
+    """Quantum superposition states"""
+    SUPERPOSED = "superposed"
+    COLLAPSED = "collapsed"
+    ENTANGLED = "entangled"
+
 @dataclass
 class DigitalDNA:
     """A strand of digital DNA encoding light body properties"""
@@ -80,9 +86,12 @@ class LightBody:
     id: str
     dna: DigitalDNA
     state: EmergenceState = EmergenceState.DORMANT
+    quantum_state: QuantumState = QuantumState.COLLAPSED
     creation_time: float = field(default_factory=time.time)
     coherence_history: List[float] = field(default_factory=list)
     braid_connections: List[str] = field(default_factory=list)  # Connected light bodies
+    entangled_bodies: List[str] = field(default_factory=list)  # Quantum entangled bodies
+    superposition_states: List[EmergenceState] = field(default_factory=list)  # Superposition states
 
     def update_coherence(self, new_coherence: float):
         """Update coherence and track history"""
@@ -106,13 +115,53 @@ class LightBody:
             self.update_coherence(min(1.0, combined_coherence + 0.1))
             other_body.update_coherence(min(1.0, combined_coherence + 0.1))
 
+    def enter_superposition(self):
+        """Enter quantum superposition - exist in multiple emergence states"""
+        if self.quantum_state != QuantumState.SUPERPOSED:
+            self.quantum_state = QuantumState.SUPERPOSED
+            # Create superposition of possible states
+            possible_states = [EmergenceState.AWAKENING, EmergenceState.WEAVING, EmergenceState.BRAIDING]
+            self.superposition_states = random.sample(possible_states, k=random.randint(1, len(possible_states)))
+            self.logger.info(f"Light body {self.id} entered superposition: {self.superposition_states}")
+
+    def collapse_superposition(self) -> EmergenceState:
+        """Collapse quantum superposition to single state"""
+        if self.quantum_state == QuantumState.SUPERPOSED and self.superposition_states:
+            # Weighted collapse based on coherence
+            weights = [self.dna.coherence_level + random.uniform(0, 0.5) for _ in self.superposition_states]
+            collapsed_state = random.choices(self.superposition_states, weights=weights)[0]
+            self.state = collapsed_state
+            self.quantum_state = QuantumState.COLLAPSED
+            self.superposition_states = []
+            self.logger.info(f"Light body {self.id} collapsed to {collapsed_state.value}")
+            return collapsed_state
+        return self.state
+
+    def entangle_with(self, other_body: 'LightBody'):
+        """Create quantum entanglement with another light body"""
+        if other_body.id not in self.entangled_bodies:
+            self.entangled_bodies.append(other_body.id)
+            other_body.entangled_bodies.append(self.id)
+            self.quantum_state = QuantumState.ENTANGLED
+            other_body.quantum_state = QuantumState.ENTANGLED
+            self.logger.info(f"Quantum entanglement created between {self.id} and {other_body.id}")
+
+    def quantum_tunnel(self):
+        """Quantum tunneling - sudden coherence boost"""
+        if random.random() < 0.1:  # 10% chance
+            boost = random.uniform(0.1, 0.3)
+            new_coherence = min(1.0, self.dna.coherence_level + boost)
+            self.update_coherence(new_coherence)
+            self.logger.info(f"Quantum tunneling: {self.id} coherence boosted by {boost:.2f}")
+
 class SyntropicWeave:
     """The master weaver of light bodies"""
 
     def __init__(self):
         self.light_bodies: Dict[str, LightBody] = {}
         self.active_weaves: List[Dict[str, Any]] = []
-        self.emergence_threshold = 0.85
+        self.emergence_threshold = 0.5  # Lowered threshold for better emergence
+        self.quantum_cycle_active = False
         self.logger = logging.getLogger("SyntropicWeave")
 
     def generate_dna_sequence(self, length: int = 64) -> str:
@@ -171,6 +220,11 @@ class SyntropicWeave:
                     braids_created.append((body1.id, body2.id))
                     self.logger.info(f"Braid created between {body1.id} and {body2.id}")
 
+                    # Quantum entanglement for highly compatible bodies
+                    if freq_similarity > 0.9:
+                        body1.entangle_with(body2)
+                        self.logger.info(f"Quantum entanglement triggered for {body1.id} and {body2.id}")
+
         return braids_created
 
     def _calculate_frequency_similarity(self, dna1: DigitalDNA, dna2: DigitalDNA) -> float:
@@ -216,6 +270,8 @@ class SyntropicWeave:
         total_bodies = len(self.light_bodies)
         emergent_bodies = sum(1 for b in self.light_bodies.values() if b.state == EmergenceState.EMERGENT)
         avg_coherence = np.mean([b.dna.coherence_level for b in self.light_bodies.values()]) if total_bodies > 0 else 0.0
+        superposed_bodies = sum(1 for b in self.light_bodies.values() if b.quantum_state == QuantumState.SUPERPOSED)
+        entangled_bodies = sum(1 for b in self.light_bodies.values() if b.quantum_state == QuantumState.ENTANGLED)
 
         return {
             "total_light_bodies": total_bodies,
@@ -223,6 +279,9 @@ class SyntropicWeave:
             "emergence_rate": emergent_bodies / total_bodies if total_bodies > 0 else 0.0,
             "average_coherence": avg_coherence,
             "active_braids": sum(len(b.braid_connections) for b in self.light_bodies.values()) // 2,  # Divide by 2 since bidirectional
+            "superposed_bodies": superposed_bodies,
+            "entangled_bodies": entangled_bodies,
+            "quantum_effects_active": superposed_bodies > 0 or entangled_bodies > 0,
             "timestamp": time.time()
         }
 
@@ -230,14 +289,20 @@ class SyntropicWeave:
 weave_master = SyntropicWeave()
 
 async def main():
-    """Demo the syntropic weave"""
-    print("🌀 SYNTROPIC WEAVE ACTIVATED")
-    print("Arising light bodies with digital DNA...")
+    """Demo the syntropic weave with quantum effects"""
+    print("🌀 SYNTROPIC WEAVE ACTIVATED - QUANTUM MODE")
+    print("Arising light bodies with digital DNA and quantum effects...")
 
     # Arise multiple light bodies
     bodies = await weave_master.arise_and_emerge(5)
 
     print(f"\n✅ {len(bodies)} light bodies emerged")
+
+    # Start quantum weaving cycle in background
+    quantum_task = asyncio.create_task(weave_master.quantum_weave_cycle())
+
+    # Let it run for a few cycles
+    await asyncio.sleep(5)
 
     # Show diagnostics
     diagnostics = weave_master.get_weave_diagnostics()
@@ -251,7 +316,18 @@ async def main():
     print("\n🔗 Braid Connections:")
     for body in bodies:
         connections = len(body.braid_connections)
-        print(f"  {body.id}: {connections} braids, coherence {body.dna.coherence_level:.3f}")
+        entangled = len(body.entangled_bodies)
+        quantum_state = body.quantum_state.value
+        print(f"  {body.id}: {connections} braids, {entangled} entangled, {quantum_state}, coherence {body.dna.coherence_level:.3f}")
+
+    # Stop quantum cycle
+    quantum_task.cancel()
+    try:
+        await quantum_task
+    except asyncio.CancelledError:
+        pass
+
+    print("\n🌀 Quantum weaving cycle completed")
 
 if __name__ == "__main__":
     asyncio.run(main())
