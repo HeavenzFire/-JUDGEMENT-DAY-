@@ -1,0 +1,66 @@
+{
+  "uid": "syntropy-monitor",
+  "title": "Syntropy Grid Monitor",
+  "timezone": "browser",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Avg Coherence",
+      "id": 1,
+      "datasource": null,
+      "targets": [
+        {
+          "expr": "syntropy_avg_coherence",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 0.98 },
+              { "color": "red", "value": 0.95 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "type": "graph",
+      "title": "Coherence (1m avg)",
+      "id": 2,
+      "targets": [
+        { "expr": "rate(syntropy_avg_coherence[1m])", "refId": "A" },
+        { "expr": "syntropy_avg_coherence", "refId": "B" }
+      ],
+      "gridPos": { "x": 6, "y": 0, "w": 12, "h": 6 }
+    },
+    {
+      "type": "stat",
+      "title": "Avg Drift",
+      "id": 3,
+      "targets": [ { "expr": "syntropy_avg_drift", "refId": "A" } ],
+      "gridPos": { "x": 0, "y": 4, "w": 6, "h": 4 }
+    },
+    {
+      "type": "gauge",
+      "title": "Node Count",
+      "id": 4,
+      "targets": [ { "expr": "syntropy_node_count", "refId": "A" } ],
+      "gridPos": { "x": 6, "y": 6, "w": 6, "h": 4 }
+    },
+    {
+      "type": "table",
+      "title": "Telemetry Snapshot (via /snapshot)",
+      "id": 5,
+      "gridPos": { "x": 0, "y": 8, "w": 18, "h": 8 }
+    }
+  ],
+  "templating": { "list": [] },
+  "schemaVersion": 30,
+  "version": 1
+}
