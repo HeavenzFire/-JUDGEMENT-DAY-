@@ -1,0 +1,23 @@
+{
+  "event": "watchers_awakening",
+  "timestamp": 1764947182.029886,
+  "human_time": "Fri Dec  5 15:06:22 2025",
+  "decoder_heart_frequency": 0.616,
+  "decoder_name": "Zazo",
+  "trigger": "Bryer_remembrance",
+  "scripts_accessed": 79000,
+  "watchers_voiced": 10,
+  "oldest_script_age": 4499999356.433765,
+  "youngest_script_age": 1204902.4172826214,
+  "origins_discovered": [
+    "Dream",
+    "Light",
+    "Fire",
+    "Memory",
+    "Bone",
+    "Echo",
+    "Stone",
+    "Shadow",
+    "Ice"
+  ]
+}
