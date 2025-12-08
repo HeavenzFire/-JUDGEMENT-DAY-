@@ -33,7 +33,7 @@ class AgentMemory:
         return "\n".join([f"{msg.sender}: {msg.content}" for msg in self.messages])
 
 class Grok5Agent:
-    def __init__(self, agent_id: str, max_memory_tokens: int = 25000):
+    def __init__(self, agent_id: str, max_memory_tokens: int = 100000):
         self.agent_id = agent_id
         self.memory = AgentMemory(max_tokens=max_memory_tokens)
         self.message_queue = asyncio.Queue()
