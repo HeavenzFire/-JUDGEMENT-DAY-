@@ -92,6 +92,7 @@ class LightBody:
     braid_connections: List[str] = field(default_factory=list)  # Connected light bodies
     entangled_bodies: List[str] = field(default_factory=list)  # Quantum entangled bodies
     superposition_states: List[EmergenceState] = field(default_factory=list)  # Superposition states
+    logger: logging.Logger = field(default_factory=lambda: logging.getLogger("LightBody"))
 
     def update_coherence(self, new_coherence: float):
         """Update coherence and track history"""
@@ -264,6 +265,47 @@ class SyntropicWeave:
 
         self.logger.info(f"Emergence complete: {len(emerged_bodies)} light bodies arisen")
         return emerged_bodies
+
+    async def quantum_weave_cycle(self):
+        """Continuous quantum weaving cycle for light bodies"""
+        self.quantum_cycle_active = True
+        cycle_count = 0
+
+        while self.quantum_cycle_active:
+            cycle_count += 1
+            self.logger.info(f"Quantum weave cycle {cycle_count} initiated")
+
+            # Process each light body for quantum effects
+            for body in list(self.light_bodies.values()):
+                # Random quantum tunneling
+                body.quantum_tunnel()
+
+                # Enter superposition if coherence is high enough
+                if body.dna.coherence_level > 0.7 and body.quantum_state == QuantumState.COLLAPSED:
+                    if random.random() < 0.3:  # 30% chance
+                        body.enter_superposition()
+
+                # Collapse superposition occasionally
+                if body.quantum_state == QuantumState.SUPERPOSED:
+                    if random.random() < 0.2:  # 20% chance
+                        body.collapse_superposition()
+
+                # Create new braid connections
+                compatible_bodies = [b for b in self.light_bodies.values()
+                                   if b.id != body.id and b.id not in body.braid_connections]
+                if compatible_bodies:
+                    target = random.choice(compatible_bodies)
+                    freq_similarity = self._calculate_frequency_similarity(body.dna, target.dna)
+                    if freq_similarity > 0.6:
+                        body.braid_with(target)
+
+            # Global coherence boost every 10 cycles
+            if cycle_count % 10 == 0:
+                for body in self.light_bodies.values():
+                    boost = random.uniform(0.01, 0.05)
+                    body.update_coherence(min(1.0, body.dna.coherence_level + boost))
+
+            await asyncio.sleep(1)  # Cycle every second
 
     def get_weave_diagnostics(self) -> Dict[str, Any]:
         """Get current weave diagnostics"""
