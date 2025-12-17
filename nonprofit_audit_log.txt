@@ -1,0 +1,24 @@
+2025-12-17T20:48:15.621299 | Generate Certificate of Formation | SUCCESS
+2025-12-17T20:48:15.621390 | Generate SOSDirect JSON | SUCCESS
+2025-12-17T20:48:15.621442 | Generate Bylaws | SUCCESS
+2025-12-17T20:48:15.621492 | Generate IRS Form 1023-EZ Draft | SUCCESS
+2025-12-17T20:48:15.621547 | Generate IRS JSON | SUCCESS
+2025-12-17T20:48:15.621595 | Generate Formation Checklist | SUCCESS
+2025-12-17T20:48:15.621646 | Generate Compliance Reminder Script | SUCCESS
+2025-12-17T20:48:15.621699 | Generate SOSDirect Submission Script | SUCCESS
+2025-12-17T20:48:15.621748 | Generate IRS 1023-EZ Submission Script | SUCCESS
+2025-12-17T20:48:15.621760 | Submit Form 202 via SOSDirect | SKIPPED | Manual submission required
+2025-12-17T20:48:15.621770 | Submit IRS 1023-EZ Online | SKIPPED | Manual submission required
+2025-12-17T20:48:15.622322 | Cryptographic Verification | COMPLETED | Hashes saved to artifact_hashes.json
+2025-12-17T20:48:15.654983 | Generate Certificate of Formation | SUCCESS
+2025-12-17T20:48:15.655186 | Generate SOSDirect JSON | SUCCESS
+2025-12-17T20:48:15.655351 | Generate Bylaws | SUCCESS
+2025-12-17T20:48:15.655487 | Generate IRS Form 1023-EZ Draft | SUCCESS
+2025-12-17T20:48:15.655618 | Generate IRS JSON | SUCCESS
+2025-12-17T20:48:15.655745 | Generate Formation Checklist | SUCCESS
+2025-12-17T20:48:15.655882 | Generate Compliance Reminder Script | SUCCESS
+2025-12-17T20:48:15.656017 | Generate SOSDirect Submission Script | SUCCESS
+2025-12-17T20:48:15.656149 | Generate IRS 1023-EZ Submission Script | SUCCESS
+2025-12-17T20:48:15.656169 | Submit Form 202 via SOSDirect | SKIPPED | Manual submission required
+2025-12-17T20:48:15.656186 | Submit IRS 1023-EZ Online | SKIPPED | Manual submission required
+2025-12-17T20:48:15.656478 | Cryptographic Verification | COMPLETED | Hashes saved to artifact_hashes.json

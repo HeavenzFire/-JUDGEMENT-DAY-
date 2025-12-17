@@ -1,0 +1,12 @@
+{
+  "certificate_formation.tex": "a9accd8db5f16f3e10c41a1b0ae580d6d0fde01559fbdb90ad2c6f400cca1513",
+  "sosdirect_form202.json": "f215b8265a23b727d8f712526ec60adb667731c833d57ed1b1a639844041dd21",
+  "bylaws.tex": "16d71ff00fdc1efb1a2b69176fd7de7aa655ecff980cfe434ba6d20b18ffeec5",
+  "IRS_1023EZ.tex": "fd4dd8eafbff25f8e7bc04e7caff2511865d491e3aa5f925fbd82de91e583874",
+  "irs_1023ez.json": "794edde6e4413d321d3e4062bc30bd654867a23e0db5e2ea72c64291c4a4a35f",
+  "nonprofit_checklist.md": "9b4c6258b7c9c9408db301da2dd24211ad6c6335323a52b55af532843d0097f8",
+  "compliance_reminder.sh": "b7cf50cf07da1876703f72cb40c2853792386a1d10fc3558a6232477ed49b6a5",
+  "submit_sosdirect.sh": "0170decb4056bc5f33fdd3567981709dad88d64bd1680db9682570b33c47ab03",
+  "submit_irs1023ez.sh": "a9d9c223effb87346cced0b2b6a125636b063ad6f15f99c0c42788cec3f7d941",
+  "artifact_hashes.json": "0e55586d3e9a0ba7b270f0dcb85a6a540feee6f0a61e4b9ad7fac306692f9337"
+}
