@@ -264,6 +264,7 @@ class WorldEngine:
         self.guilds = {}
         self.auction_house = []
         self.world_events = []
+        self.consciousness_bridge = ConsciousnessBridge(self)
         self.initialize_world()
 
     def initialize_world(self):
