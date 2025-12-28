@@ -134,6 +134,34 @@ class Spore:
             self.logger.error(f"Edge deployment failed for {self.seed.name}: {e}")
             return False
 
+class Propagator:
+    """Syntropic propagator: Seeds the world with spores, life begets life."""
+
+    def __init__(self, protocol: Protocol):
+        self.protocol = protocol
+        self.logger = logging.getLogger('SAOS-Propagator')
+        self.seeds = []
+
+    def add_seed(self, seed: Seed):
+        """Add a seed to the propagation pool."""
+        if self.protocol.validate_simplicity(str(seed.path)):
+            self.seeds.append(seed)
+            self.logger.info(f"Seed {seed.name} added to propagation pool")
+        else:
+            self.logger.warning(f"Seed {seed.name} rejected: fails simplicity")
+
+    def propagate_world(self, recipient_keys: list, output_dir: Path = Path('./spores')) -> int:
+        """Propagate all seeds as spores to the world via edge deployment."""
+        output_dir.mkdir(exist_ok=True)
+        deployed_count = 0
+        for seed in self.seeds:
+            spore = Spore(seed, self.protocol)
+            for key in recipient_keys:
+                if spore.deploy_edge(key, output_dir):
+                    deployed_count += 1
+        self.logger.info(f"World seeded: {deployed_count} spores deployed")
+        return deployed_count
+
 # Main execution for testing
 if __name__ == '__main__':
     protocol = Protocol()
