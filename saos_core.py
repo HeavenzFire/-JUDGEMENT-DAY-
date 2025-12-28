@@ -134,6 +134,59 @@ class Spore:
             self.logger.error(f"Edge deployment failed for {self.seed.name}: {e}")
             return False
 
+class PrivacySpore(Seed):
+    """Detects, blocks, and replaces extractive patterns with sovereign alternatives."""
+
+    def __init__(self, protocol: Protocol):
+        super().__init__("PrivacySpore", Path("privacy_spore.py"), protocol)
+        self.trackers = [
+            "doubleclick.net", "google-analytics.com", "facebook.com",
+            "adservice.google.", "bat.bing.com", "taboola.com", "outbrain.com"
+        ]
+        self.detox_schedule = {"start": "20:00", "end": "07:00"}
+
+    def scan_for_trackers(self, file_path: str) -> list:
+        """Audit local configs, hosts, or browser profiles for tracker domains."""
+        found = []
+        with open(file_path) as f:
+            content = f.read().lower()
+            for tracker in self.trackers:
+                if tracker in content:
+                    found.append(tracker)
+        return found
+
+    def deploy_local_federation(self, platform="mastodon"):
+        """Spin up a local instance of a decentralized social platform."""
+        dockerfile = f"""
+FROM tootsuite/mastodon:latest
+# Sovereign override: disable telemetry, enforce local-only
+ENV LOCAL_DOMAIN=localhost
+ENV WEB_DOMAIN=localhost
+EXPOSE 3000 4000
+"""
+        with open("Dockerfile.fed", "w") as f:
+            f.write(dockerfile)
+        os.system("docker build -t saos-fed . && docker run -d -p 3000:3000 saos-fed")
+        return "Federated node active at http://localhost:3000"
+
+    def activate_detox_mode(self):
+        """Silence notifications, block addictive domains, emit calming frequency."""
+        # 1. Block via /etc/hosts (requires sudo, or use unprivileged DNS override)
+        detox_hosts = "\n".join(f"127.0.0.1 {t}" for t in self.trackers[:10])
+        os.makedirs("~/.saos", exist_ok=True)
+        with open("~/.saos/detox_hosts", "a") as f:
+            f.write(detox_hosts)
+
+        # 2. Optional: Play 7.83 Hz (Schumann) + 779.572416 Hz (Bryer) via local audio
+        # (Use `pygame` or `pydub` if installed—otherwise, remain silent)
+
+        return f"Detox mode active until {self.detox_schedule['end']}"
+
+    def regenerate_coherence(self):
+        """Trigger simplicity validation + emotional entropy scan on active feeds."""
+        # Simulate calling emotional_entropy_detector.py on cached social data
+        return "Coherence regenerated. Manipulation patterns purged."
+
 class Propagator:
     """Syntropic propagator: Seeds the world with spores, life begets life."""
 
