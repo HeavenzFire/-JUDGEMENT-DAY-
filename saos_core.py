@@ -4,6 +4,7 @@
 """
 SAOS-Core: Syntropic Agent Operating System Core
 Implements syntropic growth principles: life begets life, regenerative complexity, edge deployment, simplicity as care, invisibility as victory.
+Armed with privacy weapons, decentralized alternatives, digital detox protocols.
 """
 
 import os
@@ -15,6 +16,7 @@ import logging
 from pathlib import Path
 import ast
 import radon.complexity as radon_cc
+import re
 
 class Protocol:
     """Core syntropic protocol enforcing life begets life, regenerative growth, simplicity, invisibility."""
