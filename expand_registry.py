@@ -34,7 +34,7 @@ def expand_registry(nonprofit, db_path='heavenzfire.db'):
     import datetime
     for gift in gift_registry:
         cursor.execute('INSERT INTO gift_ledger VALUES (?, ?, ?, ?, ?, ?)',
-                       (gift['id'], gift['content'], gift['license'], gift['verification'], gift['delivery_mode'], datetime.datetime.utcnow().isoformat()))
+                       (gift['id'], gift['content'], gift['license'], gift['verification'], gift['delivery_mode'], datetime.datetime.now(datetime.UTC).isoformat()))
     conn.commit()
     conn.close()
     
