@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-12-31T00:23:46.177065",
+  "data_source": "Chicago Police Department Budget 2024",
+  "focus_area": "Englewood Community Area",
+  "militarization_budget_total": 20200000,
+  "budget_breakdown": {
+    "tactical_equipment": 4500000,
+    "surveillance_tech": 2800000,
+    "training_programs": 1200000,
+    "special_units": 8500000,
+    "emergency_response": 3200000
+  },
+  "opportunity_costs": {
+    "child_meals_years": 0.6056299600943823,
+    "families_stabilized_year": 11222.222222222223,
+    "mediators_trained": 207.23049776355205,
+    "community_centers_year": 33.666666666666664
+  },
+  "hdi_impact": {
+    "current_hdi": 68.25,
+    "projected_hdi": 311.1543176526494,
+    "hdi_improvement": 242.90431765264944,
+    "breakdown": {
+      "child_nutrition": 0.015140749002359559,
+      "family_stability": 168.33333333333334,
+      "mediators": 4.144609955271041,
+      "centers": 1.0099999999999998
+    }
+  },
+  "key_findings": [
+    "Militarization budget could fund 0.6 years of meals for Englewood children",
+    "Could stabilize 11222 families annually",
+    "Could train 207 community mediators",
+    "Could operate 33.7 community centers yearly",
+    "HDI improvement: +242.90 points (child-weighted)"
+  ],
+  "recommendations": [
+    "Redirect 40% of tactical equipment budget to child nutrition programs",
+    "Convert surveillance tech budget to community mediator training",
+    "Transform special units budget into family stabilization grants",
+    "Repurpose emergency response systems for verified household support"
+  ]
+}
