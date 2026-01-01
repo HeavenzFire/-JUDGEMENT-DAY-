@@ -1,0 +1,123 @@
+{
+  "system_status": "EMERGENCY_ACTIVE",
+  "emergency_assessment": {
+    "severity_score": 1.9,
+    "response_level": "LEVEL_1_IMMEDIATE",
+    "immediate_actions": [
+      "CALL 911 IMMEDIATELY",
+      "Activate emergency medical response",
+      "Secure child safety immediately",
+      "Contact law enforcement for protection",
+      "Prepare for emergency shelter placement"
+    ],
+    "agency_notifications": [
+      "Emergency Medical Services (911)",
+      "Law Enforcement",
+      "Child Protective Services",
+      "Emergency Room",
+      "Crisis Response Team"
+    ]
+  },
+  "response_activation": {
+    "response_protocols": [
+      "Immediate danger protocol activated",
+      "Emergency evacuation procedures initiated",
+      "Law enforcement dispatch protocol",
+      "Medical emergency response activated",
+      "Child rescue protocols engaged"
+    ],
+    "multi_agency_coordination": {
+      "agencies_coordinated": [
+        "Primary Emergency Services",
+        "Local Social Services",
+        "Medical Facilities",
+        "Law Enforcement Agencies",
+        "Child Protective Services",
+        "Emergency Medical Services",
+        "Crisis Intervention Teams",
+        "Victim Support Services",
+        "Child Welfare Agencies",
+        "School Districts",
+        "Domestic Violence Services",
+        "Legal Aid"
+      ],
+      "coordination_protocol": "Multi-agency response activated",
+      "communication_channels": [
+        "Emergency hotlines",
+        "Direct agency contact",
+        "Unified command center"
+      ]
+    },
+    "timeline": {
+      "immediate": "WITHIN 2 MINUTES",
+      "5_minutes": "01:06",
+      "1_hour": "02:01",
+      "24_hours": "2026-01-02 01:01"
+    },
+    "safety_measures": [
+      "Secure immediate environment",
+      "Remove from danger if possible",
+      "Contact trusted support network",
+      "Document incident details safely",
+      "Access emergency resources",
+      "Ensure child safety and supervision",
+      "Contact child-specific emergency services",
+      "Implement child protection protocols",
+      "Activate domestic violence safety plan",
+      "Secure safe location immediately",
+      "Contact domestic violence advocacy"
+    ]
+  },
+  "emergency_resources": {
+    "immediate_emergency": {
+      "emergency_services": "911",
+      "description": "Police, fire, medical emergencies"
+    },
+    "crisis_hotlines": {
+      "national_suicide_prevention": "988",
+      "national_domestic_violence": "1-800-799-7233",
+      "childhelp_national": "1-800-4-A-CHILD (1-800-422-4453)",
+      "poison_control": "1-800-222-1222",
+      "veterans_crisis": "988 (press 1)",
+      "trans_crisis": "877-565-8860"
+    },
+    "family_emergency_services": {
+      "emergency_shelter": "211 or local social services",
+      "family_violence_prevention": "1-800-843-5200",
+      "child_abuse_hotline": "1-800-422-4453",
+      "rape_crisis": "1-800-656-4673"
+    },
+    "medical_emergencies": {
+      "emergency_room": "Local hospital emergency department",
+      "urgent_care": "Local urgent care centers",
+      "mental_health_crisis": "Local crisis stabilization unit"
+    },
+    "child_specific_emergencies": {
+      "missing_child": "1-800-THE-LOST",
+      "child_abuse_reporting": "Local child protective services",
+      "school_emergency": "School administration or 911"
+    }
+  },
+  "metrics": {
+    "response_level": "LEVEL_1_IMMEDIATE",
+    "crisis_type": "domestic_violence_with_children",
+    "agencies_notified": 12,
+    "response_time_minutes": 0.0
+  },
+  "crisis_summary": {
+    "primary_crisis": "domestic_violence_with_children",
+    "involved_parties": [
+      "mother",
+      "children",
+      "abusive_partner"
+    ],
+    "location": "family_home",
+    "immediate_needs": [
+      "emergency_shelter",
+      "child_protection",
+      "medical_attention"
+    ],
+    "response_timestamp": "2026-01-01T01:01:45.905604",
+    "system_response_level": "LEVEL_1_IMMEDIATE"
+  }
+}
