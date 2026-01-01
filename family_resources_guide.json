@@ -1,0 +1,433 @@
+{
+  "system_status": "ACTIVE",
+  "child_protection_resources": {
+    "emergency_hotlines": {
+      "childhelp_national": {
+        "number": "1-800-4-A-CHILD (1-800-422-4453)",
+        "description": "24/7 crisis counseling and referrals",
+        "services": [
+          "crisis_intervention",
+          "referrals",
+          "prevention"
+        ]
+      },
+      "national_center_missing": {
+        "number": "1-800-THE-LOST (1-800-843-5678)",
+        "description": "Missing children assistance",
+        "services": [
+          "missing_children",
+          "prevention",
+          "recovery"
+        ]
+      },
+      "cybertipline": {
+        "number": "1-800-843-5678",
+        "description": "Online child exploitation reporting",
+        "services": [
+          "online_safety",
+          "exploitation_reporting"
+        ]
+      }
+    },
+    "organizations": [
+      {
+        "name": "Prevent Child Abuse America",
+        "description": "Child abuse prevention and family support",
+        "website": "preventchildabuse.org",
+        "services": [
+          "prevention",
+          "education",
+          "advocacy"
+        ]
+      },
+      {
+        "name": "Child Welfare League of America",
+        "description": "Child welfare and family services",
+        "website": "cwla.org",
+        "services": [
+          "advocacy",
+          "training",
+          "policy"
+        ]
+      },
+      {
+        "name": "National Children's Alliance",
+        "description": "Children's advocacy centers network",
+        "website": "nationalchildrensalliance.org",
+        "services": [
+          "investigation",
+          "therapy",
+          "support"
+        ]
+      }
+    ],
+    "government_services": [
+      {
+        "name": "Child Protective Services (CPS)",
+        "description": "Local child protection investigations",
+        "contact": "Local county department of social services",
+        "services": [
+          "investigations",
+          "family_support",
+          "emergency_intervention"
+        ]
+      },
+      {
+        "name": "Department of Health and Human Services",
+        "description": "Federal child welfare programs",
+        "website": "acf.hhs.gov",
+        "services": [
+          "funding",
+          "policy",
+          "research"
+        ]
+      }
+    ],
+    "support_services": [
+      {
+        "name": "Court Appointed Special Advocates (CASA)",
+        "description": "Volunteer advocates for children in court",
+        "website": "casaforchildren.org",
+        "services": [
+          "advocacy",
+          "court_representation"
+        ]
+      },
+      {
+        "name": "Big Brothers Big Sisters",
+        "description": "Mentoring programs for children",
+        "website": "bbbs.org",
+        "services": [
+          "mentoring",
+          "support",
+          "prevention"
+        ]
+      }
+    ]
+  },
+  "maternal_health_resources": {
+    "health_hotlines": {
+      "postpartum_support": {
+        "number": "1-800-944-4773",
+        "description": "Postpartum depression and anxiety support",
+        "services": [
+          "mental_health",
+          "crisis_support",
+          "referrals"
+        ]
+      },
+      "national_domestic_violence": {
+        "number": "1-800-799-7233",
+        "description": "Domestic violence support and safety planning",
+        "services": [
+          "crisis_intervention",
+          "safety_planning",
+          "legal_support"
+        ]
+      },
+      "maternal_mental_health": {
+        "number": "1-833-943-5746",
+        "description": "Maternal mental health support",
+        "services": [
+          "depression",
+          "anxiety",
+          "therapy_referrals"
+        ]
+      }
+    },
+    "organizations": [
+      {
+        "name": "March of Dimes",
+        "description": "Maternal and infant health",
+        "website": "marchofdimes.org",
+        "services": [
+          "education",
+          "research",
+          "support"
+        ]
+      },
+      {
+        "name": "Postpartum Support International",
+        "description": "Postpartum mental health support",
+        "website": "postpartum.net",
+        "services": [
+          "support_groups",
+          "therapy",
+          "education"
+        ]
+      },
+      {
+        "name": "La Leche League International",
+        "description": "Breastfeeding support and education",
+        "website": "llli.org",
+        "services": [
+          "breastfeeding_support",
+          "education",
+          "groups"
+        ]
+      }
+    ],
+    "government_services": [
+      {
+        "name": "Women, Infants, and Children (WIC)",
+        "description": "Nutrition support for mothers and children",
+        "contact": "Local health department",
+        "services": [
+          "nutrition",
+          "breastfeeding",
+          "education"
+        ]
+      },
+      {
+        "name": "Medicaid/Medicare",
+        "description": "Health insurance for low-income families",
+        "website": "medicaid.gov",
+        "services": [
+          "health_insurance",
+          "prenatal_care",
+          "mental_health"
+        ]
+      },
+      {
+        "name": "Temporary Assistance for Needy Families (TANF)",
+        "description": "Financial assistance for families",
+        "contact": "Local social services",
+        "services": [
+          "financial_support",
+          "job_training",
+          "child_care"
+        ]
+      }
+    ],
+    "support_services": [
+      {
+        "name": "Healthy Start Programs",
+        "description": "Prenatal and infant health support",
+        "contact": "Local health department",
+        "services": [
+          "prenatal_care",
+          "home_visits",
+          "education"
+        ]
+      },
+      {
+        "name": "Home Visiting Programs",
+        "description": "In-home support for new mothers",
+        "contact": "Local health or social services",
+        "services": [
+          "parenting_support",
+          "health_monitoring",
+          "resource_connection"
+        ]
+      }
+    ]
+  },
+  "family_support_resources": {
+    "emergency_services": {
+      "national_emergency": {
+        "number": "911",
+        "description": "Immediate emergency response",
+        "services": [
+          "police",
+          "fire",
+          "medical"
+        ]
+      },
+      "suicide_prevention": {
+        "number": "988",
+        "description": "Mental health crisis support",
+        "services": [
+          "crisis_counseling",
+          "suicide_prevention"
+        ]
+      },
+      "poison_control": {
+        "number": "1-800-222-1222",
+        "description": "Poison emergency assistance",
+        "services": [
+          "poison_emergency",
+          "information"
+        ]
+      }
+    },
+    "organizations": [
+      {
+        "name": "United Way",
+        "description": "Local community support coordination",
+        "website": "unitedway.org",
+        "services": [
+          "referrals",
+          "funding",
+          "volunteer_coordination"
+        ]
+      },
+      {
+        "name": "Salvation Army",
+        "description": "Emergency assistance and support",
+        "website": "salvationarmy.org",
+        "services": [
+          "emergency_shelter",
+          "food",
+          "clothing"
+        ]
+      },
+      {
+        "name": "Catholic Charities",
+        "description": "Family support and social services",
+        "website": "catholiccharities.org",
+        "services": [
+          "counseling",
+          "financial_help",
+          "immigration_support"
+        ]
+      }
+    ],
+    "housing_resources": [
+      {
+        "name": "Local Homeless Shelters",
+        "description": "Emergency and transitional housing",
+        "contact": "211 or local social services",
+        "services": [
+          "shelter",
+          "transitional_housing",
+          "support_services"
+        ]
+      },
+      {
+        "name": "Department of Housing and Urban Development (HUD)",
+        "description": "Housing assistance programs",
+        "website": "hud.gov",
+        "services": [
+          "public_housing",
+          "vouchers",
+          "homeless_assistance"
+        ]
+      }
+    ],
+    "food_security": [
+      {
+        "name": "Food Banks",
+        "description": "Emergency food assistance",
+        "contact": "feedingamerica.org",
+        "services": [
+          "food_pantries",
+          "soup_kitchens",
+          "meal_programs"
+        ]
+      },
+      {
+        "name": "Supplemental Nutrition Assistance Program (SNAP)",
+        "description": "Food assistance benefits",
+        "website": "fns.usda.gov/snap",
+        "services": [
+          "food_benefits",
+          "nutrition_education"
+        ]
+      }
+    ],
+    "financial_support": [
+      {
+        "name": "Local Social Services",
+        "description": "Financial assistance and support",
+        "contact": "Local department of social services",
+        "services": [
+          "financial_aid",
+          "utility_assistance",
+          "employment_support"
+        ]
+      },
+      {
+        "name": "Legal Aid Societies",
+        "description": "Free legal assistance for low-income families",
+        "website": "lawhelp.org",
+        "services": [
+          "legal_advice",
+          "representation",
+          "advocacy"
+        ]
+      }
+    ]
+  },
+  "local_resources": {
+    "finding_local_services": [
+      "Call 211 for comprehensive local referrals",
+      "Contact local department of social services",
+      "Visit local community action agency",
+      "Check with local hospitals and clinics"
+    ],
+    "state_specific_resources": {
+      "california": [
+        "California Department of Social Services",
+        "California WIC"
+      ],
+      "texas": [
+        "Texas Department of Family and Protective Services",
+        "Texas WIC"
+      ],
+      "florida": [
+        "Florida Department of Children and Families",
+        "Florida WIC"
+      ],
+      "new_york": [
+        "New York State Office of Children and Family Services",
+        "New York WIC"
+      ]
+    },
+    "urban_vs_rural": {
+      "urban": [
+        "City social services",
+        "Metropolitan hospitals",
+        "Community centers"
+      ],
+      "rural": [
+        "County extension services",
+        "Rural health clinics",
+        "Regional nonprofits"
+      ]
+    }
+  },
+  "personalized_guide": {
+    "identified_needs": [
+      "child_protection",
+      "maternal_health",
+      "financial_support"
+    ],
+    "recommended_resources": {
+      "child_protection_resources": [
+        "childhelp_national",
+        "national_center_missing",
+        "cybertipline"
+      ],
+      "maternal_health_resources": [
+        "postpartum_support",
+        "national_domestic_violence",
+        "maternal_mental_health"
+      ],
+      "family_support_resources": [
+        "national_emergency",
+        "suicide_prevention",
+        "poison_control"
+      ]
+    },
+    "action_steps": [
+      "Call emergency services (911) for immediate danger",
+      "Contact local social services for immediate needs",
+      "Reach out to recommended hotlines for guidance",
+      "Connect with local organizations for ongoing support",
+      "Follow up with healthcare providers for medical needs"
+    ],
+    "emergency_contacts": {
+      "emergency_services": "911",
+      "crisis_hotline": "988",
+      "domestic_violence": "1-800-799-7233",
+      "child_abuse": "1-800-422-4453"
+    },
+    "follow_up_resources": []
+  },
+  "metrics": {
+    "total_resources": 14,
+    "categories_covered": 4,
+    "emergency_services": 9,
+    "local_services": 4
+  }
+}
