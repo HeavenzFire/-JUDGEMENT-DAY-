@@ -3,14 +3,19 @@ let terminalOutput = document.getElementById('terminal-output');
 let terminalInput = document.getElementById('terminal-input');
 let fileTree = document.getElementById('file-tree');
 
-async function loadPyodide() {
-    pyodide = await loadPyodide({
+async function loadPythonRuntime() {
+    if (typeof window.loadPyodide !== 'function') {
+        throw new Error('Pyodide loader is unavailable.');
+    }
+    pyodide = await window.loadPyodide({
         indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
     });
     terminalOutput.textContent += 'Pyodide loaded.\\n';
 }
 
-loadPyodide();
+loadPythonRuntime().catch((error) => {
+    terminalOutput.textContent += 'Python runtime unavailable: ' + error.message + '\\n';
+});
 
 terminalInput.addEventListener('keypress', async (e) => {
     if (e.key === 'Enter') {
@@ -151,7 +156,7 @@ class SyntropicVirtualClock {
 
     _frame(wallMs) {
         if (!this.running) return;
-        const elapsed = Math.max(0, Math.min(wallMs - this.lastWallMs, 250));
+        const elapsed = Math.max(0, wallMs - this.lastWallMs);
         this.lastWallMs = wallMs;
         this._advance(elapsed * this.rate);
         this.onTick(this);
