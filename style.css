@@ -125,3 +125,66 @@ button:hover {
     opacity: 0.5;
     pointer-events: none;
 }
+
+.virtual-time-sandbox {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid #00aa66;
+    background: rgba(0, 30, 20, 0.92);
+    color: #e9fff4;
+}
+
+.virtual-time-sandbox h3,
+.virtual-time-sandbox h4 {
+    color: #00ff99;
+    margin: 8px 0;
+}
+
+.virtual-time-note {
+    color: #c4d5cc;
+    font: 12px/1.5 Arial, sans-serif;
+}
+
+.virtual-time-clock,
+.virtual-time-rate {
+    display: block;
+    margin: 8px 0;
+    padding: 8px;
+    background: #07130e;
+    border: 1px solid #24543d;
+    font-variant-numeric: tabular-nums;
+}
+
+.virtual-time-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.virtual-time-controls button {
+    width: auto;
+    margin: 0;
+    padding: 8px 6px;
+    border: 1px solid #28734f;
+    background: #123b29;
+}
+
+.virtual-time-controls button:hover,
+.virtual-time-controls button:focus-visible {
+    background: #1b5a3c;
+    outline: 2px solid #00ff99;
+    outline-offset: 1px;
+}
+
+.virtual-time-events {
+    max-height: 140px;
+    overflow: auto;
+    padding-left: 24px;
+    color: #d0e6d8;
+    font: 12px/1.5 Arial, sans-serif;
+}
+
+.virtual-time-events li {
+    overflow-wrap: anywhere;
+}
