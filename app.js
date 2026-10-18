@@ -70,10 +70,11 @@ class SyntropicVirtualClock {
         this.timers = new Map();
         this.nextTimerId = 1;
         this.onTick = onTick;
-        this.frameId = null;
+        this.wakeTimer = null;
         this.lastWallMs = null;
-        this.callbackLimit = 1000;
-        this._frame = this._frame.bind(this);
+        this.wakeups = 0;
+        this.processedCallbacks = 0;
+        this.sessionWallStart = performance.now();
     }
 
     now() {
@@ -85,6 +86,10 @@ class SyntropicVirtualClock {
             throw new RangeError('Rate must be between 1/500× and 1000×.');
         }
         this.rate = rate;
+        if (this.running) {
+            this.lastWallMs = performance.now();
+            this._scheduleNext();
+        }
         this.onTick(this);
     }
 
@@ -99,6 +104,7 @@ class SyntropicVirtualClock {
 
     clearTimeout(id) {
         this.timers.delete(id);
+        if (this.running) this._scheduleNext();
     }
 
     clearInterval(id) {
@@ -117,6 +123,7 @@ class SyntropicVirtualClock {
             dueAt: this.virtualMs + delay,
             intervalMs
         });
+        if (this.running) this._scheduleNext();
         return id;
     }
 
@@ -124,14 +131,14 @@ class SyntropicVirtualClock {
         if (this.running) return;
         this.running = true;
         this.lastWallMs = performance.now();
-        this.frameId = requestAnimationFrame(this._frame);
         this.onTick(this);
+        this._scheduleNext();
     }
 
     pause() {
         this.running = false;
-        if (this.frameId !== null) cancelAnimationFrame(this.frameId);
-        this.frameId = null;
+        if (this.wakeTimer !== null) clearTimeout(this.wakeTimer);
+        this.wakeTimer = null;
         this.lastWallMs = null;
         this.onTick(this);
     }
@@ -151,23 +158,45 @@ class SyntropicVirtualClock {
         this.virtualMs = 0;
         this.rate = 1;
         this.timers.clear();
+        this.wakeups = 0;
+        this.processedCallbacks = 0;
+        this.sessionWallStart = performance.now();
         this.onTick(this);
     }
 
-    _frame(wallMs) {
+    _scheduleNext() {
         if (!this.running) return;
+        if (this.wakeTimer !== null) clearTimeout(this.wakeTimer);
+
+        let nextDueAt = Infinity;
+        for (const timer of this.timers.values()) {
+            if (timer.dueAt < nextDueAt) nextDueAt = timer.dueAt;
+        }
+
+        const untilEventMs = Number.isFinite(nextDueAt)
+            ? Math.max(0, (nextDueAt - this.virtualMs) / this.rate)
+            : 1000;
+        // Refresh the display at most once per second while waiting for distant work.
+        const wallDelayMs = Math.max(1, Math.min(1000, untilEventMs));
+        this.wakeTimer = setTimeout(() => this._wake(), wallDelayMs);
+    }
+
+    _wake() {
+        if (!this.running) return;
+        const wallMs = performance.now();
         const elapsed = Math.max(0, wallMs - this.lastWallMs);
         this.lastWallMs = wallMs;
+        this.wakeups += 1;
         this._advance(elapsed * this.rate);
         this.onTick(this);
-        this.frameId = requestAnimationFrame(this._frame);
+        this._scheduleNext();
     }
 
     _advance(deltaMs) {
         const target = this.virtualMs + deltaMs;
         let callbacksRun = 0;
 
-        while (callbacksRun < this.callbackLimit) {
+        while (callbacksRun < 1000) {
             let next = null;
             for (const timer of this.timers.values()) {
                 if (timer.dueAt <= target && (!next || timer.dueAt < next.dueAt)) {
@@ -192,7 +221,7 @@ class SyntropicVirtualClock {
         }
 
         let skipped = 0;
-        if (callbacksRun === this.callbackLimit) {
+        if (callbacksRun === 1000) {
             for (const timer of this.timers.values()) {
                 if (timer.dueAt <= target) {
                     skipped += 1;
@@ -206,6 +235,7 @@ class SyntropicVirtualClock {
         }
 
         this.virtualMs = target;
+        this.processedCallbacks += callbacksRun;
         if (skipped) {
             console.warn('Virtual-time callback limit reached; overdue callbacks were skipped.');
         }
@@ -261,7 +291,15 @@ function openVirtualTimeSandbox() {
         const rateLabel = state.rate === 0.002
             ? '1/500× (500× slower)'
             : state.rate === 1000 ? '1000× (1000× faster)' : state.rate + '×';
-        rateDisplay.textContent = 'Rate: ' + rateLabel + (state.running ? ' · Running' : ' · Paused');
+        const wallSeconds = Math.max(0.001, (performance.now() - state.sessionWallStart) / 1000);
+        const wakesPerSecond = (state.wakeups / wallSeconds).toFixed(1);
+        const callbacksPerWake = state.wakeups
+            ? (state.processedCallbacks / state.wakeups).toFixed(1)
+            : '0.0';
+        rateDisplay.textContent = 'Rate: ' + rateLabel
+            + (state.running ? ' · Running' : ' · Paused')
+            + ' · Scheduler wakes: ' + state.wakeups + ' (' + wakesPerSecond + '/s)'
+            + ' · Callbacks/wake: ' + callbacksPerWake;
         const pauseButton = panel.querySelector('[data-action="pause"]');
         pauseButton.textContent = state.running ? 'Pause' : 'Resume';
     });
